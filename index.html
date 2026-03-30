@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Catálogo — filtrar livros</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0f1419;
+        --surface: #1a222c;
+        --border: #2d3a47;
+        --text: #e8eef4;
+        --muted: #8b9aab;
+        --accent: #5eb3d4;
+        --accent-dim: #3d7a9a;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: 'DM Sans', system-ui, sans-serif;
+        background: radial-gradient(
+            ellipse 120% 80% at 20% -20%,
+            rgba(94, 179, 212, 0.12),
+            transparent 50%
+          ),
+          var(--bg);
+        color: var(--text);
+        line-height: 1.5;
+      }
+
+      .wrap {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 2.5rem 1.25rem 4rem;
+      }
+
+      header {
+        margin-bottom: 2rem;
+      }
+
+      header h1 {
+        font-family: 'Source Serif 4', Georgia, serif;
+        font-size: clamp(1.75rem, 4vw, 2.25rem);
+        font-weight: 600;
+        margin: 0 0 0.35rem;
+        letter-spacing: -0.02em;
+      }
+
+      header p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .filters {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.25rem 1.35rem;
+        display: grid;
+        gap: 1rem 1.25rem;
+        margin-bottom: 1.75rem;
+      }
+
+      @media (min-width: 560px) {
+        .filters {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .filters .span-2 {
+          grid-column: span 2;
+        }
+      }
+
+      label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--muted);
+        margin-bottom: 0.35rem;
+      }
+
+      input {
+        width: 100%;
+        padding: 0.55rem 0.75rem;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: var(--bg);
+        color: var(--text);
+        font: inherit;
+      }
+
+      input:focus {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+        border-color: var(--accent-dim);
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        align-items: center;
+      }
+
+      button {
+        font: inherit;
+        font-weight: 600;
+        padding: 0.6rem 1.1rem;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        background: linear-gradient(160deg, var(--accent), var(--accent-dim));
+        color: var(--bg);
+      }
+
+      button:hover {
+        filter: brightness(1.06);
+      }
+
+      button.secondary {
+        background: transparent;
+        color: var(--muted);
+        border: 1px solid var(--border);
+      }
+
+      button.secondary:hover {
+        color: var(--text);
+        border-color: var(--muted);
+      }
+
+      .meta {
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+
+      .grid {
+        display: grid;
+        gap: 1rem;
+      }
+
+      @media (min-width: 600px) {
+        .grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      article {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.1rem 1.2rem;
+        transition: border-color 0.15s ease;
+      }
+
+      article:hover {
+        border-color: var(--accent-dim);
+      }
+
+      article h2 {
+        font-family: 'Source Serif 4', Georgia, serif;
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 0 0 0.5rem;
+      }
+
+      article .author {
+        font-size: 0.9rem;
+        color: var(--accent);
+        margin: 0 0 0.35rem;
+      }
+
+      article .detail {
+        font-size: 0.82rem;
+        color: var(--muted);
+        margin: 0;
+      }
+
+      .empty {
+        text-align: center;
+        padding: 2.5rem 1rem;
+        color: var(--muted);
+        border: 1px dashed var(--border);
+        border-radius: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>Catálogo de livros</h1>
+        <p>
+          Filtros aplicados com a mesma função usada nos testes
+          (<code>filtrarLivros</code>).
+        </p>
+      </header>
+
+      <form class="filters" id="form-filtros" novalidate>
+        <div>
+          <label for="titulo">Título</label>
+          <input
+            id="titulo"
+            name="titulo"
+            type="text"
+            placeholder="Ex.: pequeno"
+            autocomplete="off"
+          />
+        </div>
+        <div>
+          <label for="autor">Autor</label>
+          <input
+            id="autor"
+            name="autor"
+            type="text"
+            placeholder="Ex.: machado"
+            autocomplete="off"
+          />
+        </div>
+        <div>
+          <label for="genero">Gênero</label>
+          <input
+            id="genero"
+            name="genero"
+            type="text"
+            placeholder="Ex.: Romance"
+            autocomplete="off"
+          />
+        </div>
+        <div>
+          <label for="ano-min">Ano mín.</label>
+          <input id="ano-min" name="anoMin" type="number" placeholder="1880" />
+        </div>
+        <div>
+          <label for="ano-max">Ano máx.</label>
+          <input id="ano-max" name="anoMax" type="number" placeholder="1955" />
+        </div>
+        <div class="span-2 actions">
+          <button type="submit">Aplicar filtros</button>
+          <button type="button" class="secondary" id="btn-limpar">
+            Limpar
+          </button>
+          <span class="meta" id="contagem"></span>
+        </div>
+      </form>
+
+      <div class="grid" id="lista-livros" aria-live="polite"></div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
